@@ -41,3 +41,5 @@ Free to use, modify, or enhance.
 ## Made By
 Vempali Hrishita
 All rights reserved 2025
+
+Please give the project a ⭐ if it helped you in any way :)
