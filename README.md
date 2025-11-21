@@ -10,11 +10,11 @@ This project evaluates password strength on the fly while giving the user a clea
 
 ### Real-Time Password Strength Detection
 Validates password across 5 key rules:
-- ✔ Minimum 8 characters  
-- ✔ Contains at least one uppercase letter  
-- ✔ Contains at least one lowercase letter  
-- ✔ Contains at least one number  
-- ✔ Contains at least one special character  
+- Minimum 8 characters  
+- Contains at least one uppercase letter  
+- Contains at least one lowercase letter  
+- Contains at least one number  
+- Contains at least one special character  
 
 The UI instantly updates the strength meter and requirement states.
 
