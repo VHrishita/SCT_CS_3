@@ -150,3 +150,9 @@ body::before {
     0% { opacity: 0.3; transform: scale(1); }
     100% { opacity: 0.6; transform: scale(1.25); }
 }
+
+.site-logo {
+    width: 120px;      /* adjust as needed */
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 8px rgba(0,255,255,0.6));
+}
