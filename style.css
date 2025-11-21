@@ -1,106 +1,152 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  background: #0a0a0a;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* was center */
-  height: 100vh;
-  margin: 0;
-  padding-top: 10px; /* adds spacing from the top */
+    font-family: Arial, sans-serif;
+    background: #0e0e11;
+    color: #d1d1d1;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.chat-container {
-  width: 400px;
-  min-height: 550px; /* ensures consistent height */
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 255, 200, 0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin-top: 40px; /* keep the spacing from the top */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container {
+    width: 380px;
+    background: #1a1a1f;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.15);
+    text-align: center;
 }
 
-
-.chat-header {
-  background: #0f2027;
-  background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
-  padding: 15px;
-  text-align: center;
+h2 {
+    margin-top: 0;
+    color: #00eaff;
 }
 
-.chat-header h2 {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+.subtext {
+    color: #888;
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
-.chat-header p {
-  font-size: 13px;
-  opacity: 0.8;
+.input-box {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.chat-box {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 14px;
-  background-color: #1a1a1a;
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid #333;
+    background: #111;
+    color: white;
+    text-align: center;
 }
 
-.bot-msg, .user-msg {
-  margin: 8px 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  max-width: 85%;
+#toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #bbb;
 }
 
-.bot-msg {
-  background-color: #1e3a5f;
-  color: #80dfff;
-  align-self: flex-start;
+.strength-meter {
+    width: 100%;
+    height: 10px;
+    background: #333;
+    border-radius: 10px;
+    margin: 15px 0;
 }
 
-.user-msg {
-  background-color: #009688;
-  color: white;
-  align-self: flex-end;
+#meter-bar {
+    height: 100%;
+    width: 0%;
+    background-color: red;
+    border-radius: 10px;
+    transition: 0.3s;
 }
 
-.input-area {
-  display: flex;
-  border-top: 1px solid #333;
-  padding: 10px;
-  background-color: #111;
+#strength-msg {
+    font-size: 16px;
+    font-weight: bold;
 }
 
-#user-input {
-  flex: 1;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  outline: none;
-  background: #222;
-  color: #fff;
+.rules {
+    text-align: left;
+    padding-left: 0;
+    margin-top: 15px;
 }
 
-#send-btn {
-  background: #00bfa6;
-  border: none;
-  color: white;
-  padding: 8px 14px;
-  margin-left: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  transition: 0.2s;
+.rules li {
+    list-style-type: none;
+    padding: 6px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
 }
 
-#send-btn:hover {
-  background: #00e6b8;
+.icon {
+    width: 20px;
+    display: inline-block;
+    margin-right: 10px;
+    transition: 0.2s ease;
+}
+
+.valid .icon {
+    color: #00ff88;
+    transform: scale(1.3);
+}
+
+.invalid .icon {
+    color: #ff4444;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+footer .small {
+    font-size: 12px;
+    color: #555;
+}
+
+/* Synthwave / Vaporwave Neon Sunset Background */
+body {
+    background: linear-gradient(180deg, #0c0c16 0%, #1a0033 40%, #ff2d7c 80%, #ffb86c 100%);
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* Soft neon glow animation */
+body::before {
+    content: "";
+    position: fixed;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at 50% 60%, rgba(255, 0, 128, 0.35), transparent 60%);
+    filter: blur(60px);
+    animation: neonPulse 8s infinite alternate ease-in-out;
+    z-index: -1;
+}
+
+@keyframes neonPulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 0.6; transform: scale(1.25); }
 }

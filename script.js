@@ -1,179 +1,83 @@
-const chatBox = document.getElementById("chat-box");
-const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
+function checkPasswordStrength() {
+    const password = document.getElementById("password").value;
 
-sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
-});
+    let strength = 0;
 
-function appendMessage(message, sender) {
-  const msgDiv = document.createElement("div");
-  msgDiv.classList.add(sender === "bot" ? "bot-msg" : "user-msg");
-  msgDiv.innerHTML = message;
-  chatBox.appendChild(msgDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
+    const hasLength = password.length >= 8;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+    updateRule("len", hasLength);
+    updateRule("upper", hasUpper);
+    updateRule("lower", hasLower);
+    updateRule("num", hasNumber);
+    updateRule("special", hasSpecial);
+
+    strength += hasLength ? 1 : 0;
+    strength += hasUpper ? 1 : 0;
+    strength += hasLower ? 1 : 0;
+    strength += hasNumber ? 1 : 0;
+    strength += hasSpecial ? 1 : 0;
+
+    updateStrengthMeter(strength);
 }
 
-// typing indicator
-function showTypingIndicator() {
-  const typingDiv = document.createElement("div");
-  typingDiv.classList.add("bot-msg");
-  typingDiv.id = "typing";
-  typingDiv.textContent = "Bot is typing...";
-  chatBox.appendChild(typingDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+function updateRule(id, isValid) {
+    const item = document.getElementById(id);
 
-function removeTypingIndicator() {
-  const typingDiv = document.getElementById("typing");
-  if (typingDiv) typingDiv.remove();
-}
+    const icon = item.querySelector(".icon");
+    item.classList.remove("valid", "invalid");
 
-// ⚡ Bot instantly displays full message
-function botTypeMessage(message) {
-  return new Promise((resolve) => {
-    const msgDiv = document.createElement("div");
-    msgDiv.classList.add("bot-msg");
-    msgDiv.innerHTML = message;
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-    resolve();
-  });
-}
-
-// --- Password DFA Logic ---
-function simulateDFA(password) {
-  let states = { upper: false, lower: false, digit: false, special: false };
-  let transitions = [];
-
-  for (let ch of password) {
-    if (/[A-Z]/.test(ch) && !states.upper) {
-      states.upper = true;
-      transitions.push("→ q1 (uppercase found)");
-    } else if (/[a-z]/.test(ch) && !states.lower) {
-      states.lower = true;
-      transitions.push("→ q2 (lowercase found)");
-    } else if (/[0-9]/.test(ch) && !states.digit) {
-      states.digit = true;
-      transitions.push("→ q3 (digit found)");
-    } else if (/[@$!%*?&]/.test(ch) && !states.special) {
-      states.special = true;
-      transitions.push("→ q4 (special found)");
+    if (isValid) {
+        item.classList.add("valid");
+        icon.textContent = "✔";
+    } else {
+        item.classList.add("invalid");
+        icon.textContent = "✖";
     }
-  }
-
-  const allGood = Object.values(states).every((v) => v);
-  transitions.push(
-    allGood ? "✅ q_final (accepting state reached)" : "❌ Did not reach q_final"
-  );
-
-  return { transitions, accepted: allGood };
 }
 
-// --- Regex Strength Check ---
-function checkStrength(password) {
-  const regex =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+function updateStrengthMeter(score) {
+    const bar = document.getElementById("meter-bar");
+    const msg = document.getElementById("strength-msg");
 
-  if (password.length < 8) return "Password too short (min 8 chars)";
-  if (!/[A-Z]/.test(password)) return "Add at least one uppercase letter";
-  if (!/[a-z]/.test(password)) return "Add at least one lowercase letter";
-  if (!/[0-9]/.test(password)) return "Add at least one number";
-  if (!/[@$!%*?&]/.test(password)) return "Add a special character (@$!%*?&)";
-  if (!regex.test(password)) return "Needs better structure.";
-  return "Strong password!";
+    if (score === 0) {
+        bar.style.width = "0%";
+        msg.innerHTML = "";
+        return;
+    }
+
+    if (score <= 2) {
+        bar.style.width = "30%";
+        bar.style.background = "red";
+        msg.innerHTML = "Weak Password ❌";
+        msg.style.color = "red";
+    } 
+    else if (score === 3 || score === 4) {
+        bar.style.width = "60%";
+        bar.style.background = "orange";
+        msg.innerHTML = "Moderate Password ⚠️";
+        msg.style.color = "orange";
+    } 
+    else if (score === 5) {
+        bar.style.width = "100%";
+        bar.style.background = "#00ff88";
+        msg.innerHTML = "Strong Password ✅";
+        msg.style.color = "#00ff88";
+    }
 }
 
-// --- Reassurance messages (cycled) ---
-let reassuranceIndex = 0;
-const reassuranceMessages = [
-  "🛡️ Totally safe! I don’t store or send your password anywhere — everything runs right here in your browser.",
-  "🔒 You’re all good! No data ever leaves your device. It’s just between you and me 🤫",
-  "✅ 100% private! This tool works locally — your info never touches the internet."
-];
+function togglePassword() {
+    const input = document.getElementById("password");
+    const toggle = document.getElementById("toggle");
 
-// --- Greeting and Farewell messages ---
-const greetings = [
-  "Hey there 👋! I’m your Security Assistant. Want me to check a password for you?",
-  "Hiya 😄! Ready to test your password strength?",
-  "Hello friend 🤖! Let’s see how strong your password is today!"
-];
-
-const farewells = [
-  "Goodbye! Stay safe and use strong passwords 💪",
-  "See you later! Keep your credentials secure 🔐",
-  "Bye 👋 — may your passwords always be uncrackable 🧠"
-];
-
-// --- Chatbot Logic ---
-async function sendMessage() {
-  const msg = userInput.value.trim();
-  if (!msg) return;
-
-  appendMessage(msg, "user");
-  userInput.value = "";
-
-  const lowerMsg = msg.toLowerCase();
-
-  // 💬 Greeting handler
-  if (["hi", "hello", "hey", "hii", ].some((w) => lowerMsg.includes(w))) {
-    showTypingIndicator();
-    await new Promise((r) => setTimeout(r, 700));
-    removeTypingIndicator();
-    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-    await botTypeMessage(randomGreeting);
-    return;
-  }
-
-  // 💬 Farewell handler
-  if (["bye", "thank you", "goodbye", "see you", "later"].some((w) => lowerMsg.includes(w))) {
-    showTypingIndicator();
-    await new Promise((r) => setTimeout(r, 700));
-    removeTypingIndicator();
-    const randomFarewell = farewells[Math.floor(Math.random() * farewells.length)];
-    await botTypeMessage(randomFarewell);
-    return;
-  }
-
-  // ✅ Reassurance reply when user asks about safety
-  if (
-    lowerMsg.includes("safe") ||
-    lowerMsg.includes("save") ||
-    lowerMsg.includes("private") ||
-    lowerMsg.includes("secure") ||
-    lowerMsg.includes("hack") ||
-    lowerMsg.includes("password")
-  ) {
-    showTypingIndicator();
-    await new Promise((r) => setTimeout(r, 1000));
-    removeTypingIndicator();
-
-    await botTypeMessage(reassuranceMessages[reassuranceIndex]);
-    reassuranceIndex = (reassuranceIndex + 1) % reassuranceMessages.length;
-    return;
-  }
-
-  // Default DFA + regex analysis
-  showTypingIndicator();
-  await new Promise((r) => setTimeout(r, 800));
-  removeTypingIndicator();
-
-  await botTypeMessage("Let me scan through automata states... 🔍");
-
-  const { transitions, accepted } = simulateDFA(msg);
-
-  for (const t of transitions) {
-    await new Promise((r) => setTimeout(r, 350));
-    await botTypeMessage(t);
-  }
-
-  const result = checkStrength(msg);
-  await botTypeMessage((accepted ? "✅ " : "❌ ") + result);
-
-  if (accepted)
-    await botTypeMessage(
-      "All states passed! You’re officially a cybersecurity ninja 😁"
-    );
-  else await botTypeMessage("Hmmm… my DFA says no! Try again 💪");
+    if (input.type === "password") {
+        input.type = "text";
+        toggle.textContent = "🙈";
+    } else {
+        input.type = "password";
+        toggle.textContent = "🙉";
+    }
 }

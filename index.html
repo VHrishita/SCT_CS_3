@@ -1,40 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart SecuriBot 🤖</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Password Strength Checker</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-  <link rel="stylesheet" href="style.css" />
+    <!-- Floating Particle Background -->
+    <style>
+    /* --- Cyber Floating Particles Background --- */
+    body {
+        background: #0c0c16; /* dark base */
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* particle container */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(0, 255, 255, 0.6);
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0,255,255,0.8);
+        animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(100vh) scale(0.7);
+            opacity: 0;
+        }
+        30% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-20vh) scale(1.2);
+            opacity: 0;
+        }
+    }
+    </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-header">
-      <h2>Smart Security Bot 🤖</h2>
-      <p>Your cybersecurity assistant powered by Automata Theory 🧠</p>
+
+    <!-- Floating particles generated in JS -->
+    <div class="particles"></div>
+
+    <div class="wrapper">
+
+        <div class="container">
+
+            <h2>Password Strength Checker</h2>
+            <p class="subtext">Your password is checked locally. <br>
+                <strong>No data is saved or sent anywhere.</strong>
+            </p>
+
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Enter your password" oninput="checkPasswordStrength()">
+                <span id="toggle" onclick="togglePassword()">🙉</span>
+            </div>
+
+            <div class="strength-meter">
+                <div id="meter-bar"></div>
+            </div>
+
+            <p id="strength-msg"></p>
+
+            <h3>Password Requirements</h3>
+            <ul class="rules">
+                <li id="len"><span class="icon">✖</span> Minimum 8 characters</li>
+                <li id="upper"><span class="icon">✖</span> At least one uppercase letter</li>
+                <li id="lower"><span class="icon">✖</span> At least one lowercase letter</li>
+                <li id="num"><span class="icon">✖</span> At least one number</li>
+                <li id="special"><span class="icon">✖</span> At least one special character</li>
+            </ul>
+
+        </div>
+
+        <footer>
+            <p>This tool runs entirely in your browser. No passwords are saved or transmitted.</p>
+            <p class="small">Made by Vempali Hrishita for secure password practices</p>
+        </footer>
+
     </div>
 
-    <div id="chat-box" class="chat-box">
-      <div class="bot-msg">
-        Hey! I’m your Security Assistant 🤖<br />
-        Want me to check your password strength?
-      </div>
-    </div>
+    <script src="script.js"></script>
 
-    <div class="input-area">
-      <input type="text" id="user-input" placeholder="Type your password..." />
-      <button id="send-btn">Send</button>
-    </div>
-  </div>
+    <!-- Particle Generation Script -->
+    <script>
+        const particleContainer = document.querySelector(".particles");
 
-  <footer style="text-align:center; font-size:13px; color:#aaa; margin-top:15px; font-family:'Poppins', sans-serif;">
-    <p>Developed by Vempali Hrishita & Ashika V © 2025</p>
-    <p>🔒 Privacy Note: This tool runs 100% locally in your browser. No data is sent to any server. Your passwords remain private and secure.</p>
-  </footer>
+        function createParticle() {
+            const particle = document.createElement("div");
+            particle.classList.add("particle");
 
-  <script src="script.js"></script>
+            // random position
+            particle.style.left = Math.random() * 100 + "vw";
+
+            // random size
+            const size = Math.random() * 4 + 3;
+            particle.style.width = size + "px";
+            particle.style.height = size + "px";
+
+            // random duration
+            particle.style.animationDuration = (Math.random() * 7 + 4) + "s";
+
+            particleContainer.appendChild(particle);
+
+            // remove after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 11000);
+        }
+
+        setInterval(createParticle, 70);
+    </script>
+
 </body>
 </html>
