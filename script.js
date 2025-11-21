@@ -1,14 +1,11 @@
 function checkPasswordStrength() {
     const password = document.getElementById("password").value;
-
     let strength = 0;
-
     const hasLength = password.length >= 8;
     const hasUpper = /[A-Z]/.test(password);
     const hasLower = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecial = /[^A-Za-z0-9]/.test(password);
-
     updateRule("len", hasLength);
     updateRule("upper", hasUpper);
     updateRule("lower", hasLower);
@@ -20,13 +17,10 @@ function checkPasswordStrength() {
     strength += hasLower ? 1 : 0;
     strength += hasNumber ? 1 : 0;
     strength += hasSpecial ? 1 : 0;
-
     updateStrengthMeter(strength);
 }
-
 function updateRule(id, isValid) {
     const item = document.getElementById(id);
-
     const icon = item.querySelector(".icon");
     item.classList.remove("valid", "invalid");
 
@@ -38,7 +32,6 @@ function updateRule(id, isValid) {
         icon.textContent = "✖";
     }
 }
-
 function updateStrengthMeter(score) {
     const bar = document.getElementById("meter-bar");
     const msg = document.getElementById("strength-msg");
@@ -48,7 +41,6 @@ function updateStrengthMeter(score) {
         msg.innerHTML = "";
         return;
     }
-
     if (score <= 2) {
         bar.style.width = "30%";
         bar.style.background = "red";
@@ -68,7 +60,6 @@ function updateStrengthMeter(score) {
         msg.style.color = "#00ff88";
     }
 }
-
 function togglePassword() {
     const input = document.getElementById("password");
     const toggle = document.getElementById("toggle");
